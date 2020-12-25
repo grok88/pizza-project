@@ -1,13 +1,14 @@
 import classNames from 'classnames';
 import React from 'react';
 
-interface IState {
-
-}
-
-interface IProps {
-    outline?: boolean
-}
+// interface IState {
+//
+// }
+//
+// interface IProps {
+//     outline?: boolean
+//     className:string
+// }
 
 // class Button extends React.Component<IProps, IState> {
 //     componentDidMount() {
@@ -22,10 +23,12 @@ interface IProps {
 // }
 type ButtonPropsType = {
     outline?: boolean
+    className:string
 }
 const Button: React.FC<ButtonPropsType> = React.memo((props) => {
-    return <button className={classNames('button', {
-        'button--outline': props.outline
+    const {outline,className} = props;
+    return <button className={classNames('button',className, {
+        'button--outline': outline
     })}>{props.children}</button>
 })
 
