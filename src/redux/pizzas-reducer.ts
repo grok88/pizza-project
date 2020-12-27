@@ -49,8 +49,9 @@ export const setIsLoaded = (value: boolean) => {
 export const getPizzas = () => async (dispatch: Dispatch) => {
     dispatch(setIsLoaded(true));
     try {
-        const res = await axios.get('http://localhost:3000/db.json');
-        dispatch(setPizzas(res.data.pizzas))
+        const res = await axios.get('http://localhost:3001/pizzas');
+        console.log(res.data)
+        dispatch(setPizzas(res.data))
         dispatch(setIsLoaded(false));
     } catch (e) {
         console.log(e)

@@ -1,7 +1,7 @@
 import {AppRootStateType} from './store';
 
 
-type FiltersReducerAT = ReturnType<typeof setSortBy>
+type FiltersReducerAT = ReturnType<typeof setSortBy> | ReturnType<typeof setCategory>
 
 type InitialStateType = typeof initialState;
 
@@ -17,6 +17,11 @@ export const filtersReducer = (state: InitialStateType = initialState, action: F
                 ...state,
                 sortBy: action.payload
             }
+        case 'SET_CATEGORY':
+            return {
+                ...state,
+                category: action.payload
+            }
         default:
             return state;
     }
@@ -26,5 +31,11 @@ export const setSortBy = (value: string) => {
     return {
         type: 'SET_SORT_BY',
         payload: value
-    }
+    } as const;
+}
+export const setCategory = (index: number) => {
+    return {
+        type: 'SET_CATEGORY',
+        payload: index
+    } as const;
 }

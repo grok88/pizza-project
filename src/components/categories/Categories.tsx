@@ -2,13 +2,15 @@ import React, {useState} from 'react';
 
 type CategoriesPropsType = {
     items: string[]
+    onSelectCategory:(index:number) => void
 }
-const Categories: React.FC<CategoriesPropsType> = (props) => {
-    const {items} = props;
+const Categories: React.FC<CategoriesPropsType> = React.memo((props) => {
+    const {items,onSelectCategory} = props;
     const [activeItem, setActiveItem] = useState<null | number>(null)
 
     const onSelectItem = (i: number) => {
         setActiveItem(i);
+        onSelectCategory(i);
     }
 
     return <div className="categories">
@@ -18,7 +20,7 @@ const Categories: React.FC<CategoriesPropsType> = (props) => {
                                         className={activeItem === i ? 'active' : ''}>{item}</li>)}
         </ul>
     </div>
-}
+})
 
 //class
 // interface IState {
