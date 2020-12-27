@@ -1,18 +1,16 @@
 import React, {useEffect, useReducer, useRef, useState} from 'react';
 
 type SortPopupPropsType = {
-    items: string[]
+    items: Array<{name:string, type:string}>
 }
 const SortPopup: React.FC<SortPopupPropsType> = React.memo((props) => {
     const {items} = props;
     const [popupEditMode, setPopupEditMode] = useState<boolean>(false);
     const [activeItem, setActiveItem] = useState<number>(0);
 
-    const activeLabel = items[activeItem];
+    const activeLabel = items[activeItem].name;
     const sortRef = useRef<HTMLDivElement>(null);
 
-
-    console.log('popupEditMode')
     useEffect(() => {
         document.body.addEventListener('click', handleOutsideClick);
     }, []);
@@ -35,7 +33,7 @@ const SortPopup: React.FC<SortPopupPropsType> = React.memo((props) => {
     return <div className="sort" ref={sortRef}>
         <div className="sort__label">
             <svg
-                    className={popupEditMode ? 'rotated' : ''}
+                className={popupEditMode ? 'rotated' : ''}
                 width="10"
                 height="6"
                 viewBox="0 0 10 6"
@@ -52,9 +50,9 @@ const SortPopup: React.FC<SortPopupPropsType> = React.memo((props) => {
         </div>
         {popupEditMode && <div className="sort__popup">
             <ul>
-                {items && items.map((item, i) => <li key={`${item}_${i}`}
+                {items.map((item, i) => <li key={`${item.type}_${i}`}
                                                      className={activeItem === i ? 'active' : ''}
-                                                     onClick={() => onSelectItem(i)}>{item}</li>)}
+                                                     onClick={() => onSelectItem(i)}>{item.name}</li>)}
             </ul>
         </div>}
 
