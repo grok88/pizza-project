@@ -1,12 +1,14 @@
 import React, {useState} from 'react';
 import {PizzaType} from '../../pages/Home/Home';
-import classNames from 'classnames'
+import classNames from 'classnames';
+import {PizzaLoader} from './pizza-loader/Pizza-loader';
 
 type PizzaBlockPropsType = {
     item: PizzaType
+    isLoaded: boolean
 }
 const PizzaBlock: React.FC<PizzaBlockPropsType> = (props) => {
-    const {item: {imageUrl, name, price, types=[],sizes=[]}} = props;
+    const {item: {imageUrl, name, price, types = [], sizes = []}, isLoaded} = props;
 
     const availableTypes = ['тонкое', 'традиционное'];
     const [activeType, setActiveType] = useState(types[0])
@@ -14,12 +16,14 @@ const PizzaBlock: React.FC<PizzaBlockPropsType> = (props) => {
         setActiveType(i)
     }
 
-    const availableSizes = [26, 30,40];
+    const availableSizes = [26, 30, 40];
     const [activeSize, setActiveSize] = useState(sizes[0])
     const onSelectedSize = (i: number) => {
         setActiveSize(i)
     }
-
+    if (isLoaded) {
+        return <PizzaLoader/>
+    }
     return <div className="pizza-block">
         <img
             className="pizza-block__image"
@@ -30,18 +34,20 @@ const PizzaBlock: React.FC<PizzaBlockPropsType> = (props) => {
         <div className="pizza-block__selector">
             <ul>
                 {
-                    availableTypes.map((type, i) => <li key={i} onClick={() => onSelectedType(i)} className={classNames({
-                        active: activeType === i,
-                        disabled: !types.includes(i)
-                    })}>{type}</li>)
+                    availableTypes.map((type, i) => <li key={i} onClick={() => onSelectedType(i)}
+                                                        className={classNames({
+                                                            active: activeType === i,
+                                                            disabled: !types.includes(i)
+                                                        })}>{type}</li>)
                 }
             </ul>
             <ul>
                 {
-                    availableSizes.map((size, i) => <li key={i} onClick={() => onSelectedSize(i)} className={classNames({
-                        active: activeSize === i,
-                        disabled: !sizes.includes(size)
-                    })}>{size} см.</li>)
+                    availableSizes.map((size, i) => <li key={i} onClick={() => onSelectedSize(i)}
+                                                        className={classNames({
+                                                            active: activeSize === i,
+                                                            disabled: !sizes.includes(size)
+                                                        })}>{size} см.</li>)
                 }
             </ul>
         </div>

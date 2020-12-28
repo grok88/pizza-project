@@ -1,13 +1,13 @@
-import {AppRootStateType} from './store';
-
-
 type FiltersReducerAT = ReturnType<typeof setSortBy> | ReturnType<typeof setCategory>
 
 type InitialStateType = typeof initialState;
 
 const initialState = {
-    category: 0,
-    sortBy: 'popular'
+    category: null as null | number,
+    sortBy: {
+        type: 'popular',
+        order: 'desc'
+    }
 }
 
 export const filtersReducer = (state: InitialStateType = initialState, action: FiltersReducerAT): InitialStateType => {
@@ -27,13 +27,13 @@ export const filtersReducer = (state: InitialStateType = initialState, action: F
     }
 }
 
-export const setSortBy = (value: string) => {
+export const setSortBy = (obj:any) => {
     return {
         type: 'SET_SORT_BY',
-        payload: value
+        payload: obj
     } as const;
 }
-export const setCategory = (index: number) => {
+export const setCategory = (index: number | null) => {
     return {
         type: 'SET_CATEGORY',
         payload: index

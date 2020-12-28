@@ -7,11 +7,11 @@ import {getPizzas} from './redux/pizzas-reducer';
 
 
 function App() {
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        dispatch(getPizzas());
-    }, [])
+    // const dispatch = useDispatch();
+    //
+    // useEffect(() => {
+    //     dispatch(getPizzas());
+    // }, [])
 
     return <div className="wrapper">
         <Header/>

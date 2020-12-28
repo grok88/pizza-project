@@ -2,13 +2,15 @@ import React, {useEffect, useReducer, useRef, useState} from 'react';
 
 type SortPopupPropsType = {
     items: Array<{name:string, type:string}>
+    activeSortType:string
+    onClickSortBy:(type:string) => void
 }
 const SortPopup: React.FC<SortPopupPropsType> = React.memo((props) => {
-    const {items} = props;
+    const {items,activeSortType,onClickSortBy} = props;
     const [popupEditMode, setPopupEditMode] = useState<boolean>(false);
-    const [activeItem, setActiveItem] = useState<number>(0);
 
-    const activeLabel = items[activeItem].name;
+      // @ts-ignore
+    const  activeLabel =  items.find(item => item.type === activeSortType ).name;
     const sortRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -26,8 +28,8 @@ const SortPopup: React.FC<SortPopupPropsType> = React.memo((props) => {
         setPopupEditMode(!popupEditMode);
     }
 
-    const onSelectItem = (i: number) => {
-        setActiveItem(i);
+    const onSelectItem = (i: any) => {
+        onClickSortBy(i)
         setPopupEditMode(false);
     }
     return <div className="sort" ref={sortRef}>
@@ -51,8 +53,8 @@ const SortPopup: React.FC<SortPopupPropsType> = React.memo((props) => {
         {popupEditMode && <div className="sort__popup">
             <ul>
                 {items.map((item, i) => <li key={`${item.type}_${i}`}
-                                                     className={activeItem === i ? 'active' : ''}
-                                                     onClick={() => onSelectItem(i)}>{item.name}</li>)}
+                                                     className={activeSortType === item.type ? 'active' : ''}
+                                                     onClick={() => onSelectItem(item)}>{item.name}</li>)}
             </ul>
         </div>}
 
