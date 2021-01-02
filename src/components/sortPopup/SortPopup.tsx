@@ -17,9 +17,12 @@ const SortPopup: React.FC<SortPopupPropsType> = React.memo((props) => {
         document.body.addEventListener('click', handleOutsideClick);
     }, []);
 
-    const handleOutsideClick = (e: Event) => {
+    const handleOutsideClick = (event: Event) => {
+
         //@ts-ignore
-        if (!e.path.includes(sortRef.current)) {
+        const path = event.path || (event.composedPath && event.composedPath()) || composedPath(event.target);
+
+        if (!path.includes(sortRef.current)) {
             setPopupEditMode(false);
         }
     }

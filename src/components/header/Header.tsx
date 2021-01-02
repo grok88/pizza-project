@@ -2,8 +2,12 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import logoSvg from '../../assets/img/pizza-logo.svg';
 import Button from '../button/Button';
+import {AppRootStateType} from '../../redux/store';
+import {useSelector} from 'react-redux';
 
 const Header: React.FC = React.memo(() => {
+    const totalPrize = useSelector<AppRootStateType, number>(state => state.cart.totalPrize);
+    const totalCount = useSelector<AppRootStateType, number>(state => state.cart.totalCount);
     return (
         <div className="header">
             <div className="container">
@@ -19,7 +23,7 @@ const Header: React.FC = React.memo(() => {
                 <div className="header__cart">
                   <NavLink to={'/cart'}>
                       <Button className="button--cart">
-                          <span>520 ₽</span>
+                          <span>{totalPrize}</span>
                           <div className="button__delimiter"></div>
                           <svg
                               width="18"
@@ -50,7 +54,7 @@ const Header: React.FC = React.memo(() => {
                                   strokeLinejoin="round"
                               />
                           </svg>
-                          <span>3</span>
+                          <span>{totalCount}</span>
                       </Button>
                   </NavLink>
                 </div>

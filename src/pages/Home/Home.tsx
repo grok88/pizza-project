@@ -4,6 +4,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import {setCategory, setSortBy} from '../../redux/filters-reducer';
 import {AppRootStateType} from '../../redux/store';
 import {getPizzas} from '../../redux/pizzas-reducer';
+import {setPizzaToCart} from '../../redux/cart-reducer';
+import {PizzaObjType} from '../../components/pizza-block/PizzaBlock';
 
 export type PizzaType = {
     category: number
@@ -20,10 +22,14 @@ type HomePropsType = {
     // items: PizzaType[];
 }
 const categoryName = ['Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые']
-const sortItems = [{name: 'популярности', type: 'popular', order:'desc'}, {name: 'цене', type: 'price',order:'desc'}, {
+const sortItems = [{name: 'популярности', type: 'popular', order: 'desc'}, {
+    name: 'цене',
+    type: 'price',
+    order: 'desc'
+}, {
     name: 'алфавиту',
     type: 'name',
-    order:'asc'
+    order: 'asc'
 }]
 
 const Home: React.FC<HomePropsType> = (props) => {
@@ -32,6 +38,7 @@ const Home: React.FC<HomePropsType> = (props) => {
     const isLoaded = useSelector<AppRootStateType, boolean>(state => state.pizzas.isLoaded);
     const category = useSelector<AppRootStateType, number | null>(state => state.filters.category);
     const sortType = useSelector<AppRootStateType, any>(state => state.filters.sortBy);
+    const cartItems = useSelector<AppRootStateType, any>(state => state.cart.items);
 
     const dispatch = useDispatch();
 
@@ -47,6 +54,10 @@ const Home: React.FC<HomePropsType> = (props) => {
         dispatch(setSortBy(type));
     }
 
+    const onAddPizzaToCart = (obj: PizzaObjType) => {
+        dispatch(setPizzaToCart(obj));
+    }
+
     return <div className="container">
         <div className="content__top">
             <Categories items={categoryName}
@@ -57,7 +68,8 @@ const Home: React.FC<HomePropsType> = (props) => {
         <h2 className="content__title">Все пиццы</h2>
         <div className="content__items">
             {
-                items.map((item, i) => < PizzaBlock key={i} item={item} isLoaded={isLoaded}/>)
+                items.map((item, i) => < PizzaBlock key={i} item={item} isLoaded={isLoaded}
+                                                    onAddPizza={onAddPizzaToCart} itemPizza = {cartItems[item.id]}/>)
             }
         </div>
     </div>

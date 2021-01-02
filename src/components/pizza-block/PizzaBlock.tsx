@@ -2,13 +2,25 @@ import React, {useState} from 'react';
 import {PizzaType} from '../../pages/Home/Home';
 import classNames from 'classnames';
 import {PizzaLoader} from './pizza-loader/Pizza-loader';
+import Button from '../button/Button';
 
 type PizzaBlockPropsType = {
     item: PizzaType
     isLoaded: boolean
+    onAddPizza: (item: any) => void
+    itemPizza:PizzaObjType[]
 }
+export type PizzaObjType = {
+    id: number
+    imageUrl: string
+    name: string
+    price: number
+    size: number
+    type: number
+}
+
 const PizzaBlock: React.FC<PizzaBlockPropsType> = (props) => {
-    const {item: {imageUrl, name, price, types = [], sizes = []}, isLoaded} = props;
+    const {item: {imageUrl, name, price, types = [], sizes = [], id}, isLoaded, onAddPizza,itemPizza} = props;
 
     const availableTypes = ['тонкое', 'традиционное'];
     const [activeType, setActiveType] = useState(types[0])
@@ -17,13 +29,27 @@ const PizzaBlock: React.FC<PizzaBlockPropsType> = (props) => {
     }
 
     const availableSizes = [26, 30, 40];
-    const [activeSize, setActiveSize] = useState(sizes[0])
+    const [activeSize, setActiveSize] = useState(0)
     const onSelectedSize = (i: number) => {
         setActiveSize(i)
     }
+
+    const onAddHandlePizza = () => {
+        const obj: PizzaObjType = {
+            id,
+            name,
+            imageUrl,
+            price,
+            size: activeSize,
+            type: activeType
+        }
+        onAddPizza(obj)
+    }
+
     if (isLoaded) {
         return <PizzaLoader/>
     }
+
     return <div className="pizza-block">
         <img
             className="pizza-block__image"
@@ -53,7 +79,7 @@ const PizzaBlock: React.FC<PizzaBlockPropsType> = (props) => {
         </div>
         <div className="pizza-block__bottom">
             <div className="pizza-block__price">от {price} ₽</div>
-            <div className="button button--outline button--add">
+            <Button onAddPizza={onAddHandlePizza} className="button--add" outline>
                 <svg
                     width="12"
                     height="12"
@@ -67,8 +93,8 @@ const PizzaBlock: React.FC<PizzaBlockPropsType> = (props) => {
                     />
                 </svg>
                 <span>Добавить</span>
-                <i>2</i>
-            </div>
+                {itemPizza &&  <i>{itemPizza.length}</i>}
+            </Button>
         </div>
     </div>
 }
