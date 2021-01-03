@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {PizzaType} from '../../pages/Home/Home';
 import classNames from 'classnames';
 import {PizzaLoader} from './pizza-loader/Pizza-loader';
@@ -8,7 +8,10 @@ type PizzaBlockPropsType = {
     item: PizzaType
     isLoaded: boolean
     onAddPizza: (item: any) => void
-    itemPizza:PizzaObjType[]
+    itemPizza: {
+        items: PizzaObjType[]
+        totalPrize: number
+    }
 }
 export type PizzaObjType = {
     id: number
@@ -20,7 +23,7 @@ export type PizzaObjType = {
 }
 
 const PizzaBlock: React.FC<PizzaBlockPropsType> = (props) => {
-    const {item: {imageUrl, name, price, types = [], sizes = [], id}, isLoaded, onAddPizza,itemPizza} = props;
+    const {item: {imageUrl, name, price, types = [], sizes = [], id}, isLoaded, onAddPizza, itemPizza} = props;
 
     const availableTypes = ['тонкое', 'традиционное'];
     const [activeType, setActiveType] = useState(types[0])
@@ -34,7 +37,7 @@ const PizzaBlock: React.FC<PizzaBlockPropsType> = (props) => {
         setActiveSize(i)
     }
 
-    const onAddHandlePizza = () => {
+    const onAddHandlePizza = useCallback(() => {
         const obj: PizzaObjType = {
             id,
             name,
@@ -44,7 +47,7 @@ const PizzaBlock: React.FC<PizzaBlockPropsType> = (props) => {
             type: activeType
         }
         onAddPizza(obj)
-    }
+    }, [])
 
     if (isLoaded) {
         return <PizzaLoader/>
@@ -79,7 +82,7 @@ const PizzaBlock: React.FC<PizzaBlockPropsType> = (props) => {
         </div>
         <div className="pizza-block__bottom">
             <div className="pizza-block__price">от {price} ₽</div>
-            <Button onAddPizza={onAddHandlePizza} className="button--add" outline>
+            <Button onClickHandler={onAddHandlePizza} className="button--add" outline>
                 <svg
                     width="12"
                     height="12"
@@ -93,7 +96,7 @@ const PizzaBlock: React.FC<PizzaBlockPropsType> = (props) => {
                     />
                 </svg>
                 <span>Добавить</span>
-                {itemPizza &&  <i>{itemPizza.length}</i>}
+                {itemPizza && <i>{itemPizza.items.length}</i>}
             </Button>
         </div>
     </div>

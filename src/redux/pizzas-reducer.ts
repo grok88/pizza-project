@@ -52,7 +52,7 @@ export const getPizzas = (category:number | null, sortType:{
 }) => async (dispatch: Dispatch) => {
     dispatch(setIsLoaded(true));
     try {
-        const res = await axios.get(`http://localhost:3001/pizzas/?${ category !== null ? `category=${category}` : ''}&_sort=${sortType.type}&_order=${sortType.order}`);
+        const res = await axios.get(`/pizzas/?${ category !== null ? `category=${category}` : ''}&_sort=${sortType.type}&_order=${sortType.order}`);
         dispatch(setPizzas(res.data))
         dispatch(setIsLoaded(false));
     } catch (e) {

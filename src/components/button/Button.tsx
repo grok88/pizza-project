@@ -24,11 +24,11 @@ import React from 'react';
 type ButtonPropsType = {
     outline?: boolean
     className:string
-    onAddPizza?:() => void
+    onClickHandler?:() => void
 }
 const Button: React.FC<ButtonPropsType> = React.memo((props) => {
-    const {outline,className,onAddPizza} = props;
-    return <button onClick={onAddPizza} className={classNames('button',className, {
+    const {outline,className,onClickHandler} = props;
+    return <button onClick={onClickHandler} className={classNames('button',className, {
         'button--outline': outline
     })}>{props.children}</button>
 })

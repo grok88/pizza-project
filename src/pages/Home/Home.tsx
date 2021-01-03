@@ -68,8 +68,10 @@ const Home: React.FC<HomePropsType> = (props) => {
         <h2 className="content__title">Все пиццы</h2>
         <div className="content__items">
             {
-                items.map((item, i) => < PizzaBlock key={i} item={item} isLoaded={isLoaded}
-                                                    onAddPizza={onAddPizzaToCart} itemPizza = {cartItems[item.id]}/>)
+                items.map((item, i) => {
+                    return < PizzaBlock key={i} item={item} isLoaded={isLoaded}
+                                        onAddPizza={onAddPizzaToCart} itemPizza={cartItems[item.id]}/>
+                })
             }
         </div>
     </div>
